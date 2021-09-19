@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import SectionFlex from './SectionFlex'
 import FastImage from 'react-native-fast-image'
 import Section from './Section'
@@ -8,8 +8,11 @@ import Button from './Button'
 // @ts-ignore
 import { createImageProgress } from 'react-native-image-progress'
 
-const IMAGE_URL =
-    'https://cdn-images-1.medium.com/max/1600/1*-CY5bU4OqiJRox7G00sftw.gif'
+const IMAGE_URLS = [
+    'https://cdn-images-1.medium.com/max/1600/1*-CY5bU4OqiJRox7G00sftw.gif',
+    'https://media.giphy.com/media/GEsoqZDGVoisw/giphy.gif',
+    'https://image.that.always.fails.com',
+]
 
 const Image = createImageProgress(FastImage)
 
@@ -18,7 +21,10 @@ interface PreloadExampleProps {}
 class PreloadExample extends Component<PreloadExampleProps> {
     state = {
         show: false,
-        url: IMAGE_URL,
+        urls: [...IMAGE_URLS],
+        progress: [0, 0],
+        result: [0, 0],
+        preloadedURLs: [],
     }
 
     bustCache = () => {
@@ -27,17 +33,45 @@ class PreloadExample extends Component<PreloadExampleProps> {
         // Preload images. This can be called anywhere.
         const url = IMAGE_URL + bust
         this.setState({
-            url,
+            urls: IMAGE_URLS.map(url => `${url}?bust=${uuid()}`),
             show: false,
+            progress: [0, 0],
+            result: [0, 0],
+            preloadedURLs: [],
         })
     }
 
+    onProgress = (urls, loaded, total) => {
+        this.setState({ progress: [loaded, total], preloadedURLs: urls })
+    }
+
+    onComplete = (urls, loaded, skipped) => {
+        this.setState({ result: [skipped, loaded], preloadedURLs: urls })
+    }
+
     preload = () => {
-        FastImage.preload([{ uri: this.state.url }])
+        FastImage.preload(
+          this.state.urls.map(uri => ({ uri })),
+          this.onProgress,
+          this.onComplete,
+        )
     }
 
     showImage = () => {
         this.setState({ show: true })
+    }
+
+    renderImage = uri => {
+        return this.state.show ? (
+          <Image key={uri} style={styles.image} source={{ uri }} />
+        ) : (
+          <View key={uri} style={styles.image} />
+        )
+    }
+
+    renderImages = () => {
+        const { urls, show } = this.state
+        return <View style={styles.images}>{urls.map(this.renderImage)}</View>
     }
 
     render() {
@@ -90,6 +124,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         height: 100,
         width: 100,
+    },
+    images: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
 })
 

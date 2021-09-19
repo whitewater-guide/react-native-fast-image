@@ -12,6 +12,7 @@ import {
     TransformsStyle,
     AccessibilityProps,
 } from 'react-native'
+import preloaderManager from './preloaderManager'
 
 const FastImageViewNativeModule = NativeModules.FastImageView
 
@@ -198,11 +199,23 @@ const FastImageComponent: React.ComponentType<FastImageProps> = forwardRef(
 
 FastImageComponent.displayName = 'FastImage'
 
+export interface PreloadProgressHandler {
+    (urls: string[], loaded: number, total: number): void
+}
+
+export interface PreloadCompletionHandler {
+    (urls: string[], loaded: number, skipped: number): void
+}
+
 export interface FastImageStaticProperties {
     resizeMode: typeof resizeMode
     priority: typeof priority
     cacheControl: typeof cacheControl
-    preload: (sources: Source[]) => void
+    preload: (
+        sources: Source[],
+        onProgress?: PreloadProgressHandler,
+        onComplete?: PreloadCompletionHandler,
+    ) => void
     clearMemoryCache: () => Promise<void>
     clearDiskCache: () => Promise<void>
 }
@@ -216,8 +229,13 @@ FastImage.cacheControl = cacheControl
 
 FastImage.priority = priority
 
-FastImage.preload = (sources: Source[]) =>
-    FastImageViewNativeModule.preload(sources)
+FastImage.preload = (
+    sources: Source[],
+    onProgress?: PreloadProgressHandler,
+    onComplete?: PreloadCompletionHandler,
+) => {
+    preloaderManager.preload(sources, onProgress, onComplete)
+}
 
 FastImage.clearMemoryCache = () => FastImageViewNativeModule.clearMemoryCache()
 
