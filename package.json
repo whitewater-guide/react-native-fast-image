@@ -30,9 +30,6 @@
         "dist",
         "RNFastImage.podspec"
     ],
-    "publishConfig": {
-        "access": "public"
-    },
     "scripts": {
         "build": "dv-scripts build && cp src/index.js.flow dist/index.js.flow && cp src/index.js.flow dist/index.cjs.js.flow",
         "lint": "dv-scripts lint",
@@ -77,5 +74,8 @@
     "peerDependencies": {
         "react": "^16.8.6 || ^17.0.0",
         "react-native": ">=0.60.0"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
