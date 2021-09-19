@@ -1,13 +1,13 @@
 name: CI
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
 env:
-  GITHUB_USER: ww-github
+    GITHUB_USER: ww-github
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -32,8 +32,13 @@ jobs:
               env:
                   CI: true
 
+            - name: Test
+              run: yarn lint && yarn test
+              env:
+                  CI: true
+
             - name: CI
-              run: yarn dv-scripts ci
+              run: yarn semantic-release
               env:
                   CI: true
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

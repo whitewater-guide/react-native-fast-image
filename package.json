@@ -34,7 +34,8 @@
         "build": "dv-scripts build && cp src/index.js.flow dist/index.js.flow && cp src/index.js.flow dist/index.cjs.js.flow",
         "lint": "dv-scripts lint",
         "release": "dv-scripts release",
-        "test": "dv-scripts test"
+        "test": "dv-scripts test",
+        "semantic-release": "semantic-release"
     },
     "prettier": {
         "semi": false,
@@ -58,6 +59,7 @@
     "devDependencies": {
         "@babel/core": "^7.14.6",
         "@babel/runtime": "^7.14.6",
+        "@semantic-release/git": "^9.0.1",
         "@types/jest": "^26.0.24",
         "@types/react": "^17.0.14",
         "@types/react-native": "^0.64.12",
@@ -69,6 +71,7 @@
         "react": "17.0.2",
         "react-native": "0.64.2",
         "react-test-renderer": "17.0.2",
+        "semantic-release": "^18.0.0",
         "typescript": "^4.3.5"
     },
     "peerDependencies": {
