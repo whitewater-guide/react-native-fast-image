@@ -1,5 +1,13 @@
 name: CI
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+env:
+  GITHUB_USER: ww-github
 jobs:
     build:
         runs-on: ubuntu-latest
