@@ -1,3 +1,10 @@
+# [8.6.0](https://github.com/whitewater-guide/react-native-fast-image/compare/v8.5.8...v8.6.0) (2021-09-19)
+
+
+### Features
+
+* add preloader callbacks ([d3413a8](https://github.com/whitewater-guide/react-native-fast-image/commit/d3413a83491854668ffab5dc119f5b3bbe87953b))
+
 ## [8.5.8](https://github.com/DylanVann/react-native-fast-image/compare/v8.5.7...v8.5.8) (2021-09-17)
 
 ## [8.5.7](https://github.com/DylanVann/react-native-fast-image/compare/v8.5.6...v8.5.7) (2021-09-17)
